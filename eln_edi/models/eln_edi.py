@@ -152,6 +152,8 @@ class ResPartner(models.Model):
         ('expiry', 'Expiry date'),
         ], string='Send lot date as', select=1,
         help="Set how the 'best before date' of the lot will be translated in the edi file. If none is selected, it will be sent as 'best before date'.")
+    edi_desadv_origin_variety = fields.Boolean('Origin and Variety required (DESADV)',
+        help="Check if customer requires the origin and variety in DESADV documents")
     edi_invoice_copy = fields.Boolean('Send invoice copy to payer',
         help="Check if customer requires send invoice copy to payer. For example IFA GROUP requires a copy of the invoice sent to its associates.")
     edi_test_mode = fields.Boolean('Test mode',

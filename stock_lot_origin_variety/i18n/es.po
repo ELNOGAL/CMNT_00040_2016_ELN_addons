@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 
 #. module: stock_lot_origin_variety
-#: field:stock.production.lot,origin_country_ids:0
+#: field:stock.production.lot,origin_country_id:0
 msgid "Country of origin"
 msgstr "País de origen"
 

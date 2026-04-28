@@ -28,6 +28,7 @@ from dateutil import tz
 import os
 import codecs
 import operator
+import pycountry
 log = logger("export_edi")
 
 
@@ -651,6 +652,10 @@ class EdiExport(models.TransientModel):
                 errors += _('\nThe product %s not have ean13') % move.product_id.name
             if not move.product_id.dun14:
                 errors += _('\nThe product %s not have dun14') % move.product_id.name
+        if picking.partner_id.commercial_partner_id.edi_desadv_origin_variety:
+            for line in picking.pack_operation_ids:
+                if not line.lot_id.origin_country_id.code or not line.lot_id.variety:
+                    errors += _('\nThe lot of product %s not have origin or variety') % line.product_id.name
         if errors:
             raise exceptions.Warning(_('Data error'), errors)
 
@@ -891,6 +896,23 @@ class EdiExport(models.TransientModel):
                 picking_data += self.parse_string(v['lot_id'].name, 18)
                 # DUN14 Caja
                 picking_data += self.parse_number(v['product_id'].dun14, 14, 0)
+                # Origen y Variedad
+                if picking.partner_id.commercial_partner_id.edi_desadv_origin_variety:
+                    lot_origin_country_code = v['lot_id'].origin_country_id.code or ''
+                    lot_variety = v['lot_id'].variety or ''
+                    # Origin (GEO)
+                    country = pycountry.countries.get(alpha_2=lot_origin_country_code)
+                    picking_data += self.parse_string(country.numeric, 3)
+                    # Variety
+                    picking_data += self.parse_string(lot_variety, 35)
+                    picking_data += self.parse_string('ES', 2)
+                else:
+                    # GEO
+                    picking_data += self.parse_string('', 3)
+                    # Variety
+                    picking_data += self.parse_string('', 35)
+                    # Origin
+                    picking_data += self.parse_string('', 2)
                 f.write(picking_data)
                 num_lin += 1
         f.close()
