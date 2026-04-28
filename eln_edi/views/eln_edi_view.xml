@@ -165,6 +165,7 @@
                                 <field name="product_marking_code" select="2"/>
                                 <field name="edi_picking_numeric"/>
                                 <field name="edi_desadv_lot_date"/>
+                                <field name="edi_desadv_origin_variety"/>
                                 <field name="gln_desadv" select="2"/>
                             </group>
                         </group>

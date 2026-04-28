@@ -8,11 +8,7 @@ from openerp import models, fields, api
 class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
 
-    origin_country_ids = fields.Many2many(
-        'res.country', string='Country of origin',
-        rel='stock_lot_origin_country_rel',
-        id1='lot_id', id2='country_id'
-    )
+    origin_country_id = fields.Many2one('res.country', 'Country of origin', ondelete='restrict')
     variety = fields.Char('Variety')
 
     @api.model
