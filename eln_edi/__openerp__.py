@@ -62,6 +62,7 @@
         'eln_sale',
         'stock_picking_packing',
         'delivery_route',
+        'stock_lot_origin_variety',
     ],
     'init_xml': [],
     'data': [
